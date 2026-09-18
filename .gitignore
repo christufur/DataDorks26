@@ -1,7 +1,11 @@
 data/
 answer.txt
+.venv/
 answer*.zip
+proba*.npy
 __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 .claude/settings.local.json
+answer_*.txt
+*.log

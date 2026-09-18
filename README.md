@@ -15,7 +15,7 @@ pip install -r requirements.txt
 ## Run
 1. Put the competition data at `data/D1.pkl` (labeled train) and
    `data/D2.pkl` (unlabeled test).
-2. Final model (3-seed LightGBM ensemble, averaged probabilities):
+2. Final model (2-seed LightGBM ensemble, averaged probabilities):
    ```bash
    PYTHONPATH=src python src/ensemble.py
    ```
@@ -24,10 +24,11 @@ pip install -r requirements.txt
 The script:
 - maps the 36 labels to ids 0–35 by alphabetical order (matches the
   official label mapping),
+- removes repeated `flow_uid` rows before sampling,
 - downsamples majority classes to 50k rows each,
-- frequency-encodes IPs, treats Protocol/transport/source_file/capture_date
-  as categoricals, replaces inf with NaN (LightGBM handles NaN natively),
-- trains a LightGBM multiclass model with early stopping on holdout
-  Macro-F1 (10% stratified holdout),
+- keeps IP identity and frequency, adds IP-pair, common-port, and time
+  features, and treats discrete features as LightGBM categoricals,
+- validates on an uncapped, natural-distribution 10% holdout before
+  refitting on all selected rows,
 - writes `answer.txt` (one integer class id per D2 row, no header, no
   trailing newline) and zips it into `answer.zip` for Codabench upload.
