@@ -28,6 +28,14 @@ def build_features(df, freq_maps=None):
     X = df.drop(columns=[c for c in DROP_COLS if c in df.columns])
     if freq_maps is None:
         freq_maps = {c: X[c].value_counts(normalize=True) for c in FREQ_COLS}
+        # ports seen >=100 times in train become categories; the rest -> -1
+        vc = X["Destination Port"].value_counts()
+        freq_maps["_common_ports"] = set(vc[vc >= 100].index)
+    common = freq_maps["_common_ports"]
+    cats = [-1] + sorted(common)  # fixed category set so train/test codes align
+    X["dst_port_cat"] = pd.Categorical(
+        X["Destination Port"].where(X["Destination Port"].isin(common), -1),
+        categories=cats)
     for c in FREQ_COLS:
         X[c] = X[c].map(freq_maps[c]).fillna(0.0).astype("float32")
     for c in CAT_COLS:

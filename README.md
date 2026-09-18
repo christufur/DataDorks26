@@ -15,10 +15,11 @@ pip install -r requirements.txt
 ## Run
 1. Put the competition data at `data/D1.pkl` (labeled train) and
    `data/D2.pkl` (unlabeled test).
-2. ```bash
-   python src/train.py
+2. Final model (3-seed LightGBM ensemble, averaged probabilities):
+   ```bash
+   PYTHONPATH=src python src/ensemble.py
    ```
-   (`--quick` runs a fast subsampled smoke test.)
+   Single-model variant: `python src/train.py` (`--quick` = fast smoke test).
 
 The script:
 - maps the 36 labels to ids 0–35 by alphabetical order (matches the

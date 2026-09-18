@@ -16,7 +16,7 @@ from sklearn.model_selection import train_test_split
 
 from train import build_features
 
-SEEDS = [42, 7, 2026]
+SEEDS = [42, 7]
 CAP = 50_000
 
 
@@ -25,6 +25,10 @@ def main():
     # official competition pickles from organizers' drive — trusted source
     d1_full = pd.read_pickle("data/D1.pkl")
     d2 = pd.read_pickle("data/D2.pkl")
+    # 26.75% of D1 rows are duplicate flows (same flow_uid, labels always
+    # agree) — they leak train into holdout and overweight easy rows
+    d1_full = d1_full.drop_duplicates("flow_uid").reset_index(drop=True)
+    print(f"D1 after flow_uid dedup: {len(d1_full)}", flush=True)
 
     classes = sorted(d1_full["Label"].unique())
     label_to_id = {c: i for i, c in enumerate(classes)}
@@ -60,6 +64,7 @@ def main():
 
         p = model.predict_proba(X2)
         proba_sum = p if proba_sum is None else proba_sum + p
+        np.save("proba.npy", proba_sum / si)  # for offline post-processing
 
         preds = np.argmax(proba_sum, axis=1)
         Path("answer.txt").write_text("\n".join(map(str, preds)))
