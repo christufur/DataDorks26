@@ -1,0 +1,12 @@
+/opt/anaconda3/lib/python3.13/site-packages/lightgbm/sklearn.py:1106: LGBMDeprecationWarning: The argument 'eval_set' is deprecated, use 'eval_X' and 'eval_y' instead.
+  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)
+Training until validation scores don't improve for 30 rounds
+[50]	valid_0's macro_f1: 0.973517
+[100]	valid_0's macro_f1: 0.977333
+Early stopping, best iteration is:
+[119]	valid_0's macro_f1: 0.97905
+Evaluated only: macro_f1
+seed 42: holdout Macro-F1 = 0.9791 (596s)
+wrote answer.txt/zip from 1 seed(s) (655s total)
+/opt/anaconda3/lib/python3.13/site-packages/lightgbm/sklearn.py:1106: LGBMDeprecationWarning: The argument 'eval_set' is deprecated, use 'eval_X' and 'eval_y' instead.
+  eval_set = _validate_eval_set_Xy(eval_set=eval_set, eval_X=eval_X, eval_y=eval_y)
