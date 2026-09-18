@@ -71,9 +71,10 @@ def main():
         objective="multiclass",
         num_class=len(classes),
         metric="None",  # early-stop on custom macro-F1 only
-        n_estimators=100 if quick else 300,
-        learning_rate=0.1,
+        n_estimators=100 if quick else 200,
+        learning_rate=0.05,
         num_leaves=127,
+        class_weight="balanced",  # rescues rare classes; huge macro-F1 win
         random_state=RANDOM_STATE,
         n_jobs=-1,
         verbosity=-1,
@@ -86,7 +87,7 @@ def main():
         X_tr, y_tr,
         eval_set=[(X_val, y_val)],
         eval_metric=macro_f1_eval,
-        callbacks=[early_stopping(40, first_metric_only=True),
+        callbacks=[early_stopping(30, first_metric_only=True),
                    log_evaluation(25)],
     )
 
