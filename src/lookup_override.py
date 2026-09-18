@@ -1,4 +1,4 @@
-"""Create high-confidence lookup overrides for the proven 0.9140 submission.
+"""Create high-confidence lookup overrides for the prior-balanced submission.
 
 The organizer split has disjoint flow_uid values, so mappings are learned from
 one representative row per flow. Rules and support cutoffs were selected on a
@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 
 
-BASELINE_ZIP = Path("answer_2seed_backup.zip")
+BASELINE_ZIP = Path("answer_prior_100.zip")
 RULES = [
     # name, key columns, minimum distinct training flows
     ("source_identity", ["source_file", "capture_date", "Source IP"], 10),

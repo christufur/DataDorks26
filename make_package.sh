@@ -4,5 +4,5 @@
 NAMES="${1:?usage: sh make_package.sh Name1-Name2-Name3}"
 OUT="submission_${NAMES}.zip"
 rm -f "$OUT"
-zip -r "$OUT" src/train.py src/ensemble.py README.md requirements.txt answer.txt
+zip -r "$OUT" src README.md requirements.txt answer.txt
 echo "built $OUT"
