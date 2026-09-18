@@ -14,23 +14,28 @@ pip install -r requirements.txt
 Place the competition data at `data/D1.pkl` (labeled train, 1,704,464 rows)
 and `data/D2.pkl` (unlabeled test, 312,107 rows).
 
-## Reproduce the best submission
-Run the three stages from the repo root:
+## Reproduce the best submission (0.9328)
+Run the three stages from the repo root. Seeds are fixed, so with the
+pinned library versions the output reproduces the scored file exactly.
 
 ```bash
-# 1. Base model (~25 min): deduplicated 2-seed LightGBM ensemble
+# 1. Base labels (~25 min): deduplicated 2-seed LightGBM ensemble with
+#    identity/temporal features -> answer.zip
 PYTHONPATH=src python src/ensemble.py
 
-# 2. Prior balancing (~1 min): largest single gain (+0.014 on the board)
-python src/prior_balance.py
+# 2. Ranking model (~20 min): 2-seed LightGBM on frequency-encoded
+#    features -> proba.npy (ranks the prior-balance moves)
+python src/rank_model.py
 
-# 3. Identity lookup overrides (~2 min): high-precision fixes
-python src/lookup_override.py
+# 3. Prior balancing (~1 min): largest single gain (+0.014 on the board)
+#    -> answer_prior_100.zip == the winning 0.9328 submission
+python src/prior_balance.py
 ```
 
-Final file: `answer_lookup_broad.zip` (contains `answer.txt`). The repo's
-committed-format equivalent from the competition is `answer.txt`/`answer.zip`
-in the repo root.
+The winning predictions are also committed directly as `answer.txt` /
+`answer.zip` in the repo root (byte-identical to the scored submission).
+`src/lookup_override.py` (optional stage) applies identity-rule fixes
+measured at 99.93-100% precision; it scored equal at 4 decimal places.
 
 ## Method
 1. **Base model** (`src/train.py`, driven twice by `src/ensemble.py`):

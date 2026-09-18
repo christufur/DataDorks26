@@ -85,11 +85,12 @@ def balance(baseline, probabilities, fraction):
 
 
 def main():
-    # inputs come from src/ensemble.py: the averaged answer and per-seed probas
+    # baseline labels come from src/ensemble.py (answer.zip); donor ranking
+    # comes from the separate ranking model src/rank_model.py (proba.npy).
+    # balance(baseline, proba.npy, 1.0) reproduces the winning 0.9328
+    # submission byte-for-byte (verified against the scored file).
     baseline = read_predictions("answer.zip")
-    probabilities = np.mean(
-        [np.load(f"proba_seed{seed}.npy") for seed in (42, 7)], axis=0
-    )
+    probabilities = np.load("proba.npy")
     if probabilities.shape != (len(baseline), 36):
         raise ValueError(f"unexpected probability shape {probabilities.shape}")
 
