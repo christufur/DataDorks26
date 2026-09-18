@@ -1,0 +1,4 @@
+proxy holdout macro-F1 (argmax) = 0.9758 (556s)
+tuned holdout macro-F1 = 0.9781 (+0.0022)
+multipliers: {'analysis': 0.5, 'drdos_dns': 0.5, 'drdos_udp': 0.5, 'reconnaissance': 0.7, 'shellcode': 0.5, 'syn': 0.5, 'tftp': 0.5, 'worms': 0.5}
+wrote answer_tuned.zip (365 predictions changed)
